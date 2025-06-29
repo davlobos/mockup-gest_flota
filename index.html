@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Flota - View Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1976D2 0%, #1565C0 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .phone-container {
+            width: 320px;
+            height: 640px;
+            background: #000;
+            border-radius: 30px;
+            padding: 10px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .screen {
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .status-bar {
+            height: 25px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            font-size: 12px;
+            color: #333;
+        }
+
+        .app-header {
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+
+        .app-header h1 {
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .app-header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        .login-container {
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            border-radius: 20px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #2196F3;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #2196F3, #1976D2);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .dashboard {
+            padding: 20px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(45deg, #1976D2, #1565C0);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .menu-item {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 10px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+        }
+
+        .menu-icon.profile { background: #4CAF50; }
+        .menu-icon.vehicle { background: #2196F3; }
+        .menu-icon.routes { background: #00BCD4; }
+        .menu-icon.monitor { background: #3F51B5; }
+
+        .profile-section {
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .profile-avatar {
+            width: 60px;
+            height: 60px;
+            background: #2196F3;
+            border-radius: 50%;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .vehicle-section {
+            padding: 20px;
+        }
+
+        .vehicle-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .vehicle-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .vehicle-id {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            color: white;
+        }
+
+        .status-active { background: #4CAF50; }
+        .status-maintenance { background: #00BCD4; }
+
+        .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: around;
+            padding: 10px 0;
+            border-top: 1px solid #e1e5e9;
+            border-radius: 0 0 20px 20px;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #999;
+            cursor: pointer;
+            flex: 1;
+            padding: 5px;
+        }
+
+        .nav-item.active {
+            color: #2196F3;
+        }
+
+        .nav-item div {
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+
+        .nav-item span {
+            font-size: 10px;
+        }
+
+        .screen-controls {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }
+
+        .control-btn {
+            background: rgba(0,0,0,0.7);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin: 2px;
+            border-radius: 5px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .map-view {
+            background: #e8f5e8;
+            height: 200px;
+            border-radius: 10px;
+            margin: 10px 0;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        .route-points {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .route-point {
+            width: 12px;
+            height: 12px;
+            background: #2196F3;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="phone-container">
+
+
+      <!-- Pantalla de Login -->
+        <div class="screen active" id="login">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>📶 🔋</span>
+            </div>
+            <div class="login-container">
+                <div class="logo">🚚</div>
+                <h2 style="margin-bottom: 10px; color: #333;"></h2>
+                <p style="color: #666; margin-bottom: 30px;">Gestión Integral de Flota</p>
+                
+                <div class="input-group">
+                    <label>Usuario</label>
+                    <input type="text" placeholder="Ingresa tu usuario">
+                </div>
+                
+                <div class="input-group">
+                    <label>Contraseña</label>
+                    <input type="password" placeholder="Ingresa tu contraseña">
+                </div>
+                
+                <button class="btn" onclick="showScreen('dashboard')">Iniciar Sesión</button>
+            </div>
+        </div>
+
+        <!-- Rutas Asignadas -->
+        <div class="screen" id="routes">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>📶 🔋</span>
+            </div>
+            <div class="app-header">
+                <h1>Rutas Asignadas</h1>
+                <p>Planificación y Seguimiento</p>
+            </div>
+            <div class="vehicle-section">
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Mi Ruta Actual</h4>
+                    <div class="vehicle-header">
+                        <div class="vehicle-id">RUTA-001</div>
+                        <div class="status-badge status-active">En Curso</div>
+                    </div>
+                    
+                    <div class="map-view">
+                        <div class="route-points">
+                            <div class="route-point"></div>
+                            <div class="route-point" style="background: #4CAF50;"></div>
+                            <div class="route-point"></div>
+                            <div class="route-point"></div>
+                        </div>
+                        <p>🗺️ Centro → Norte → Este → Oeste</p>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span>Origen:</span>
+                        <span>Terminal Centro</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Destino Final:</span>
+                        <span>Terminal Oeste</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Paradas:</span>
+                        <span>12 estaciones</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Tiempo estimado:</span>
+                        <span>2h 30min</span>
+                    </div>
+                </div>
+                
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Próximas Rutas</h4>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong>RUTA-002</strong>
+                            <span style="background: #00BCD4; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Programada</span>
+                        </div>
+                        <div style="font-size: 14px; color: #666;">
+                            📍 Norte → Sur → Centro<br>
+                            ⏰ 14:30 - 16:45
+                        </div>
+                    </div>
+                    
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                            <strong>RUTA-003</strong>
+                            <span style="background: #2196F3; color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px;">Pendiente</span>
+                        </div>
+                        <div style="font-size: 14px; color: #666;">
+                            📍 Este → Oeste → Centro<br>
+                            ⏰ 17:00 - 19:30
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Estadísticas del Día</h4>
+                    <div class="info-row">
+                        <span>Rutas Completadas:</span>
+                        <span style="color: #4CAF50;">2/5</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Distancia Recorrida:</span>
+                        <span>145 km</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Pasajeros Transportados:</span>
+                        <span>287</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Puntualidad:</span>
+                        <span style="color: #4CAF50;">95%</span>
+                    </div>
+                </div>
+                
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Puntos de Control</h4>
+                    
+                    <div style="display: flex; align-items: center; padding: 10px 0;">
+                        <div style="width: 20px; height: 20px; background: #4CAF50; border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">✓</div>
+                        <div>
+                            <div style="font-weight: 500;">Terminal Centro</div>
+                            <div style="font-size: 12px; color: #666;">09:15 - Completado</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; padding: 10px 0;">
+                        <div style="width: 20px; height: 20px; background: #4CAF50; border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">✓</div>
+                        <div>
+                            <div style="font-weight: 500;">Estación Norte</div>
+                            <div style="font-size: 12px; color: #666;">10:45 - Completado</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; padding: 10px 0;">
+                        <div style="width: 20px; height: 20px; background: #2196F3; border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: white; font-size: 12px;">→</div>
+                        <div>
+                            <div style="font-weight: 500;">Estación Este</div>
+                            <div style="font-size: 12px; color: #666;">12:20 - En ruta</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; align-items: center; padding: 10px 0;">
+                        <div style="width: 20px; height: 20px; background: #ddd; border-radius: 50%; margin-right: 15px; display: flex; align-items: center; justify-content: center; color: #999; font-size: 12px;">○</div>
+                        <div>
+                            <div style="font-weight: 500; color: #999;">Terminal Oeste</div>
+                            <div style="font-size: 12px; color: #999;">13:45 - Pendiente</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="showScreen('dashboard')">
+                    <div>🏠</div>
+                    <span>Inicio</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('vehicle')">
+                    <div>🚐</div>
+                    <span>Flota</span>
+                </div>
+                <div class="nav-item active" onclick="showScreen('routes')">
+                    <div>📍</div>
+                    <span>Rutas</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('profile')">
+                    <div>👤</div>
+                    <span>Perfil</span>
+                </div>
+            </div>
+        </div>
+        
+
+        <!-- Dashboard Principal -->
+        <div class="screen" id="dashboard">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>📶 🔋</span>
+            </div>
+            <div class="app-header">
+                <h1>🚐</h1>
+                <p>Bienvenido, Conductor</p>
+            </div>
+            <div class="dashboard">
+                <div class="welcome-card">
+                    <h3>Estado del Día</h3>
+                    <p>Ruta: Centro - Norte</p>
+                    <p>Vehículo: Activo</p>
+                </div>
+                
+                <div class="menu-grid">
+                    <div class="menu-item" onclick="showScreen('profile')">
+                        <div class="menu-icon profile">👤</div>
+                        <h4>Mi Perfil</h4>
+                        <p>Documentos</p>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('vehicle')">
+                        <div class="menu-icon vehicle">🚐</div>
+                        <h4>Vehículo</h4>
+                        <p>Estado y Control</p>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('routes')">
+                        <div class="menu-icon routes">🗺️</div>
+                        <h4>Rutas</h4>
+                        <p>Asignadas</p>
+                    </div>
+                    <div class="menu-item" onclick="showScreen('monitor')">
+                        <div class="menu-icon monitor">📊</div>
+                        <h4>Monitoreo</h4>
+                        <p>Tiempo Real</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item active" onclick="showScreen('dashboard')">
+                    <div>🏠</div>
+                    <span>Inicio</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('vehicle')">
+                    <div>🚐</div>
+                    <span>Flota</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('routes')">
+                    <div>📍</div>
+                    <span>Rutas</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('profile')">
+                    <div>👤</div>
+                    <span>Perfil</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Perfil del Trabajador -->
+        <div class="screen" id="profile">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>📶 🔋</span>
+            </div>
+            <div class="app-header">
+                <h1>Mi Perfil</h1>
+                <p>Información del Conductor</p>
+            </div>
+            <div class="profile-section">
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <div class="profile-avatar">JG</div>
+                        <div>
+                            <h3>Juan González</h3>
+                            <p>Conductor Senior</p>
+                        </div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span>Licencia:</span>
+                        <span>A-1 • Vigente</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Experiencia:</span>
+                        <span>5 años</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Ruta Asignada:</span>
+                        <span>Centro-Norte</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Estado:</span>
+                        <span style="color: #4CAF50;">Activo</span>
+                    </div>
+                </div>
+                
+                <div class="profile-card">
+                    <h4 style="margin-bottom: 15px;">Documentos</h4>
+                    <div class="info-row">
+                        <span>📄 Licencia de Conducir</span>
+                        <span style="color: #4CAF50;">✓</span>
+                    </div>
+                    <div class="info-row">
+                        <span>📋 Certificado Médico</span>
+                        <span style="color: #4CAF50;">✓</span>
+                    </div>
+                    <div class="info-row">
+                        <span>🆔 Documento de Identidad</span>
+                        <span style="color: #4CAF50;">✓</span>
+                    </div>
+                    <div class="info-row">
+                        <span>📜 Antecedentes</span>
+                        <span style="color: #FF9800;">⚠️</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="showScreen('dashboard')">
+                    <div>🏠</div>
+                    <span>Inicio</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('vehicle')">
+                    <div>🚐</div>
+                    <span>Flota</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('routes')">
+                    <div>📍</div>
+                    <span>Rutas</span>
+                </div>
+                <div class="nav-item active" onclick="showScreen('profile')">
+                    <div>👤</div>
+                    <span>Perfil</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gestión del Vehículo -->
+        <div class="screen" id="vehicle">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>📶 🔋</span>
+            </div>
+            <div class="app-header">
+                <h1>Mi Vehículo</h1>
+                <p>Control y Estado</p>
+            </div>
+            <div class="vehicle-section">
+                <div class="vehicle-card">
+                    <div class="vehicle-header">
+                        <div class="vehicle-id">VH-001</div>
+                        <div class="status-badge status-active">Activo</div>
+                    </div>
+                    
+                    <div class="info-row">
+                        <span>Modelo:</span>
+                        <span>Ford Transit 2022</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Placa:</span>
+                        <span>ABC-1234</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Combustible:</span>
+                        <span style="color: #4CAF50;">85%</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Kilometraje:</span>
+                        <span>45,230 km</span>
+                    </div>
+                </div>
+                
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Documentos del Vehículo</h4>
+                    <div class="info-row">
+                        <span>📋 SOAT</span>
+                        <span style="color: #4CAF50;">Vigente</span>
+                    </div>
+                    <div class="info-row">
+                        <span>🔧 Revisión Técnica</span>
+                        <span style="color: #FF9800;">Vence en 30 días</span>
+                    </div>
+                    <div class="info-row">
+                        <span>📄 Tarjeta de Propiedad</span>
+                        <span style="color: #4CAF50;">Vigente</span>
+                    </div>
+                </div>
+                
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Mantenimiento</h4>
+                    <div class="info-row">
+                        <span>Último Servicio:</span>
+                        <span>15/06/2025</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Próximo Servicio:</span>
+                        <span>15/09/2025</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Estado:</span>
+                        <span style="color: #4CAF50;">Óptimo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="showScreen('dashboard')">
+                    <div>🏠</div>
+                    <span>Inicio</span>
+                </div>
+                <div class="nav-item active" onclick="showScreen('vehicle')">
+                    <div>🚐</div>
+                    <span>Flota</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('routes')">
+                    <div>📍</div>
+                    <span>Rutas</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('profile')">
+                    <div>👤</div>
+                    <span>Perfil</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Monitoreo de Flota -->
+        <div class="screen" id="monitor">
+            <div class="status-bar">
+                <span>9:41</span>
+                <span>📶 🔋</span>
+            </div>
+            <div class="app-header">
+                <h1>Monitoreo</h1>
+                <p>Control en Tiempo Real</p>
+            </div>
+            <div class="vehicle-section">
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Mi Ruta Actual</h4>
+                    <div class="map-view">
+                        <div class="route-points">
+                            <div class="route-point"></div>
+                            <div class="route-point"></div>
+                            <div class="route-point"></div>
+                        </div>
+                        <p>🗺️ Mapa de Ruta Interactivo</p>
+                    </div>
+                    <div class="info-row">
+                        <span>Progreso:</span>
+                        <span>65% completado</span>
+                    </div>
+                    <div class="info-row">
+                        <span>Tiempo estimado:</span>
+                        <span>45 minutos</span>
+                    </div>
+                </div>
+                
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Estado de la Flota</h4>
+                    <div class="info-row">
+                        <span>🚐 Vehículos Activos:</span>
+                        <span>12/15</span>
+                    </div>
+                    <div class="info-row">
+                        <span>🔧 En Mantenimiento:</span>
+                        <span>2</span>
+                    </div>
+                    <div class="info-row">
+                        <span>⚠️ Alertas Pendientes:</span>
+                        <span>3</span>
+                    </div>
+                </div>
+                
+                <div class="vehicle-card">
+                    <h4 style="margin-bottom: 15px;">Alertas Recientes</h4>
+                    <div style="background: #fff3cd; padding: 10px; border-radius: 8px; margin-bottom: 10px;">
+                        <p style="font-size: 12px; color: #856404;">⚠️ VH-003: Revisión técnica próxima a vencer</p>
+                    </div>
+                    <div style="background: #d1ecf1; padding: 10px; border-radius: 8px;">
+                        <p style="font-size: 12px; color: #0c5460;">ℹ️ VH-007: Mantenimiento completado</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="showScreen('dashboard')">
+                    <div>🏠</div>
+                    <span>Inicio</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('vehicle')">
+                    <div>🚐</div>
+                    <span>Flota</span>
+                </div>
+                <div class="nav-item active" onclick="showScreen('routes')">
+                    <div>📍</div>
+                    <span>Rutas</span>
+                </div>
+                <div class="nav-item" onclick="showScreen('profile')">
+                    <div>👤</div>
+                    <span>Perfil</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Ocultar todas las pantallas
+            const screens = document.querySelectorAll('.screen');
+            screens.forEach(screen => screen.classList.remove('active'));
+            
+            // Mostrar la pantalla seleccionada
+            document.getElementById(screenId).classList.add('active');
+            
+            // Actualizar navegación activa
+            updateNavigation(screenId);
+        }
+
+        function updateNavigation(activeScreen) {
+            // Remover clase active de todos los nav-items
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Agregar clase active basado en la pantalla
+            const currentScreen = document.getElementById(activeScreen);
+            if (currentScreen) {
+                const navItem = currentScreen.querySelector('.nav-item');
+                // Encontrar el nav-item correspondiente en la pantalla actual
+                const bottomNav = currentScreen.querySelector('.bottom-nav');
+                if (bottomNav) {
+                    const navItems = bottomNav.querySelectorAll('.nav-item');
+                    navItems.forEach(item => {
+                        item.classList.remove('active');
+                        const clickHandler = item.getAttribute('onclick');
+                        if (clickHandler && clickHandler.includes(activeScreen)) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+            }
+        }
+
+        // Inicializar con la pantalla de login
+        showScreen('login');
+    </script>
+</body>
+</html>
